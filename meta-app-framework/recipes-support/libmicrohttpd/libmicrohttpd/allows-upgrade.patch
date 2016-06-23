@@ -1,0 +1,14 @@
+diff -Naur a/src/microhttpd/connection.c b/src/microhttpd/connection.c
+--- a/src/microhttpd/connection.c	2016-04-20 11:35:50.259534537 +0000
++++ b/src/microhttpd/connection.c	2016-04-20 11:29:46.291569583 +0000
+@@ -733,8 +733,7 @@
+   {
+     if (NULL == end)
+       return MHD_YES;
+-    if ( (MHD_str_equal_caseless_ (end, "close")) ||
+-         (MHD_str_equal_caseless_ (end, "upgrade")) )
++    if ( (MHD_str_equal_caseless_ (end, "close")) )
+       return MHD_NO;
+    return MHD_YES;
+   }
+
