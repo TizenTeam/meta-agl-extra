@@ -22,7 +22,7 @@ SRC_URI = "${SRC_URI_git} \
            ${SRC_URI_files} \
           "
 
-SRCREV = "d0fdae3af6998efdce4c6ba0c5d650898c9c5b27"
+SRCREV = "8753c48ed498805cec5fbc6096cd6fae3afa0da9"
 
 SECTION = "base"
 
@@ -33,7 +33,7 @@ DEPENDS = "openssl libxml2 xmlsec1 systemd libzip json-c security-manager libcap
 afm_name    = "afm"
 afm_confdir = "${sysconfdir}/${afm_name}"
 afm_datadir = "${datadir}/${afm_name}"
-afb_plugin_dir = "${libdir}/afb"
+afb_binding_dir = "${libdir}/afb"
 
 EXTRA_OECMAKE = "\
 	-DUSE_LIBZIP=1 \
@@ -83,9 +83,9 @@ pkg_postinst_${PN}_smack() {
     setcap cap_mac_override,cap_mac_admin,cap_setgid=ie $D${bindir}/afm-user-daemon
 }
 
-PACKAGES =+ "${PN}-afbplugin ${PN}-afbplugin-dbg"
-FILES_${PN}-afbplugin = " ${afb_plugin_dir}/afm-main-plugin.so "
-FILES_${PN}-afbplugin-dbg = " ${afb_plugin_dir}/.debug/afm-main-plugin.so "
+PACKAGES =+ "${PN}-binding ${PN}-binding-dbg"
+FILES_${PN}-binding = " ${afb_binding_dir}/afm-main-binding.so "
+FILES_${PN}-binding-dbg = " ${afb_binding_dir}/.debug/afm-main-binding.so "
 
 PACKAGES =+ "${PN}-tools ${PN}-tools-dbg"
 FILES_${PN}-tools = "${bindir}/wgtpkg-*"

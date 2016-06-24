@@ -1,6 +1,6 @@
 SUMMARY = "HTTP REST interface to automotive backends for HTML5 UI support"
 DESCRIPTION = "Automotive-Framework-Binder Daemon provides a HTTP REST \
-interface to various automotive-oriented plugins (sound, radio...), \
+interface to various automotive-oriented bindings (sound, radio...), \
 allowing HTML5 UIs to send platform-specific requests in a secure way."
 HOMEPAGE = "https://gerrit.automotivelinux.org/gerrit/#/admin/projects/src/app-framework-binder"
 
@@ -16,7 +16,7 @@ SRC_URI = "${SRC_URI_git} \
            ${SRC_URI_files} \
           "
 
-SRCREV = "897aa6a130eab1eb716fcc13e650fb5833a7ce32"
+SRCREV = "7059e59cddc1c81321639875636e88895bc14309"
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig
@@ -30,21 +30,21 @@ PACKAGES += "${PN}-meta"
 ALLOW_EMPTY_${PN}-meta = "1"
 
 #############################################
-# setup sample plugin packages
+# setup sample binding packages
 #############################################
-PACKAGES_DYNAMIC = "${PN}-plugin-*"
+PACKAGES_DYNAMIC = "${PN}-binding-*"
 
 python populate_packages_prepend () {
     afb_libdir = d.expand('${libdir}/afb')
-    postinst = d.getVar('plugin_postinst', True)
+    postinst = d.getVar('binding_postinst', True)
     pkgs = []
     pkgs_dbg = []
 
-    pkgs += do_split_packages(d, afb_libdir, '(.*)-api\.so$', d.expand('${PN}-plugin-%s'), 'AFB plugin for %s', postinst=postinst, extra_depends=d.expand('${PN}'))
-    pkgs += do_split_packages(d, afb_libdir, '(.*(?!-api))\.so$', d.expand('${PN}-plugin-%s'), 'AFB plugin for %s', postinst=postinst, extra_depends=d.expand('${PN}'))
+    pkgs += do_split_packages(d, afb_libdir, '(.*)-api\.so$', d.expand('${PN}-binding-%s'), 'AFB binding for %s', postinst=postinst, extra_depends=d.expand('${PN}'))
+    pkgs += do_split_packages(d, afb_libdir, '(.*(?!-api))\.so$', d.expand('${PN}-binding-%s'), 'AFB binding for %s', postinst=postinst, extra_depends=d.expand('${PN}'))
 
-    pkgs_dbg += do_split_packages(d, oe.path.join(afb_libdir, ".debug"), '(.*)-api\.so$', d.expand('${PN}-plugin-%s-dbg'), 'AFB plugin for %s, debug info', postinst=postinst, extra_depends=d.expand('${PN}'))
-    pkgs_dbg += do_split_packages(d, oe.path.join(afb_libdir, ".debug"), '(.*(?!-api))\.so$', d.expand('${PN}-plugin-%s-dbg'), 'AFB plugin for %s, debug info', postinst=postinst, extra_depends=d.expand('${PN}'))
+    pkgs_dbg += do_split_packages(d, oe.path.join(afb_libdir, ".debug"), '(.*)-api\.so$', d.expand('${PN}-binding-%s-dbg'), 'AFB binding for %s, debug info', postinst=postinst, extra_depends=d.expand('${PN}'))
+    pkgs_dbg += do_split_packages(d, oe.path.join(afb_libdir, ".debug"), '(.*(?!-api))\.so$', d.expand('${PN}-binding-%s-dbg'), 'AFB binding for %s, debug info', postinst=postinst, extra_depends=d.expand('${PN}'))
 
     metapkg = d.getVar('PN', True) + '-meta'
     d.setVar('RDEPENDS_' + metapkg, ' '.join(pkgs))
