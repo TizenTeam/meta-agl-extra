@@ -12,7 +12,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=6cb04bdb88e11107e3af4d8e3f301be5"
 #DEPENDS = "nodejs-native"
 RDEPENDS_${PN} = "af-main af-binder af-main-binding af-binder-binding-demopost af-binder-binding-authlogin"
 
-SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-demo;protocol=https;branch=1.0"
+SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-demo;protocol=https;branch=master"
 SRC_URI_files = "file://afm-client \
            file://afm-client.service \
           "

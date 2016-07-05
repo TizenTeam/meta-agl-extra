@@ -16,13 +16,13 @@ HOMEPAGE = "https://gerrit.automotivelinux.org/gerrit/#/admin/projects/src/app-f
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
-SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-main;protocol=https;branch=1.0"
+SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-main;protocol=https;branch=master"
 SRC_URI_files = ""
 SRC_URI = "${SRC_URI_git} \
            ${SRC_URI_files} \
           "
 
-SRCREV = "8753c48ed498805cec5fbc6096cd6fae3afa0da9"
+SRCREV = "81df68c04dc5e32d5d6d06bc20a7030afdf45f59"
 
 SECTION = "base"
 
