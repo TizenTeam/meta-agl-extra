@@ -1,3 +1,5 @@
+require af-main_${PV}.inc 
+
 # NOTE: using libcap-native and setcap in install doesn't work
 # NOTE: there is no SYSTEMD_USER_SERVICE_...
 # NOTE: maybe setting afm_name to agl-framework is cleaner but has implications
@@ -6,27 +8,7 @@
 
 inherit cmake pkgconfig useradd systemd
 
-SUMMARY = "AGL Framework Main part"
-DESCRIPTION = "\
-This is a core framework component for managing \
-applications, widgets, and components. \
-"
-
-HOMEPAGE = "https://gerrit.automotivelinux.org/gerrit/#/admin/projects/src/app-framework-main"
-LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://COPYING;md5=3b83ef96387f14655fc854ddc3c6bd57"
-
-SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-main;protocol=https;branch=master"
-SRC_URI_files = ""
-SRC_URI = "${SRC_URI_git} \
-           ${SRC_URI_files} \
-          "
-
-SRCREV = "81df68c04dc5e32d5d6d06bc20a7030afdf45f59"
-
 SECTION = "base"
-
-S = "${WORKDIR}/git"
 
 DEPENDS = "openssl libxml2 xmlsec1 systemd libzip json-c security-manager libcap-native af-binder"
 
@@ -38,6 +20,7 @@ afb_binding_dir = "${libdir}/afb"
 EXTRA_OECMAKE = "\
 	-DUSE_LIBZIP=1 \
 	-DUSE_SIMULATION=0 \
+	-DUSE_SDK=0 \
 	-Dafm_name=${afm_name} \
 	-Dafm_confdir=${afm_confdir} \
 	-Dafm_datadir=${afm_datadir} \
@@ -90,6 +73,4 @@ FILES_${PN}-binding-dbg = " ${afb_binding_dir}/.debug/afm-main-binding.so "
 PACKAGES =+ "${PN}-tools ${PN}-tools-dbg"
 FILES_${PN}-tools = "${bindir}/wgtpkg-*"
 FILES_${PN}-tools-dbg = "${bindir}/.debug/wgtpkg-*"
-
-BBCLASSEXTEND = "native nativesdk"
 
