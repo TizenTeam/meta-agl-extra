@@ -23,6 +23,10 @@ inherit cmake pkgconfig
 
 FILES_${PN} += "${datadir}"
 
+pkg_postinst_${PN}() {
+	mkdir -p "$D${libdir}/afb"
+}
+
 #############################################
 # setup meta package
 #############################################
