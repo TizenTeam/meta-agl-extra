@@ -75,3 +75,5 @@ FILES_libafbwsc-dbg = "\
 "
 RDEPENDS_libafbwsc-dbg += "${PN}-dbg libafbwsc-dev"
 
+RDEPENDS_${PN}-dev += "libafbwsc-dev"
+
