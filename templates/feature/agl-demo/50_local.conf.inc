@@ -4,3 +4,6 @@ EXTRA_IMAGE_FEATURES =+ "debug-tweaks"
 IMAGE_INSTALL_append = " qtwebkit qtwebkit-examples-examples"
 #IMAGE_INSTALL_append = " qtsmarthome cinematicexperience qt5everywheredemo qt5-demo-extrafiles"
 #IMAGE_INSTALL_append = " qtwebengine-examples"
+
+# add support for websocket in Qt and QML
+IMAGE_INSTALL_append = " qtwebsockets qtwebsockets-qmlplugins"
