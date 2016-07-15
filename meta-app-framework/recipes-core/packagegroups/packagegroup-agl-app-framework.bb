@@ -14,4 +14,6 @@ RDEPENDS_${PN} += "\
 	af-binder \
 	af-main \
 	web-runtime \
+	af-binder-binding-afb-dbus-binding \
+	af-binder-binding-authlogin \
     "
