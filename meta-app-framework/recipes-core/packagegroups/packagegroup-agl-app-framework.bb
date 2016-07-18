@@ -12,8 +12,9 @@ ALLOW_EMPTY_${PN} = "1"
 
 RDEPENDS_${PN} += "\
 	af-binder \
-	af-main \
-	web-runtime \
 	af-binder-binding-afb-dbus-binding \
 	af-binder-binding-authlogin \
+	libafbwsc \
+	af-main \
+	web-runtime \
     "
