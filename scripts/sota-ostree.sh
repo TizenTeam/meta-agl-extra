@@ -32,7 +32,7 @@ rm -rf tmp/
 ln -sf sysroot/tmp/ tmp
 
 # Move the traditional etc/ directory to usr/
-if [ -e etc/ ] ; then
+if [ -e etc/ ] && [ ! -e usr/etc/ ] ; then
 	mv etc/ usr/
 fi
 
