@@ -1,14 +1,81 @@
 diff -Naur a/src/microhttpd/connection.c b/src/microhttpd/connection.c
---- a/src/microhttpd/connection.c	2016-04-20 11:35:50.259534537 +0000
-+++ b/src/microhttpd/connection.c	2016-04-20 11:29:46.291569583 +0000
-@@ -733,8 +733,7 @@
-   {
-     if (NULL == end)
-       return MHD_YES;
--    if ( (MHD_str_equal_caseless_ (end, "close")) ||
--         (MHD_str_equal_caseless_ (end, "upgrade")) )
+--- a/src/microhttpd/connection.c	2016-04-08 21:02:26.000000000 +0200
++++ b/src/microhttpd/connection.c	2016-08-29 22:41:53.790560238 +0200
+@@ -708,6 +708,8 @@
+  * "keep-alive", we proceed to use the default for the respective HTTP
+  * version (which is conservative for HTTP 1.0, but might be a bit
+  * optimistic for HTTP 1.1).
++ * In the case of Upgrade, the header  Connection should not be set
++ * to keep-alive.
+  *
+  * @param connection the connection to check for keepalive
+  * @return #MHD_YES if (based on the request), a keepalive is
+@@ -750,6 +752,59 @@
+ 
+ 
+ /**
++ * Should we try to keep the given connection alive?  We can use the
++ * TCP stream for a second request if the connection is HTTP 1.1 and
++ * the "Connection" header either does not exist or is not set to
++ * "close", or if the connection is HTTP 1.0 and the "Connection"
++ * header is explicitly set to "keep-alive".  If no HTTP version is
++ * specified (or if it is not 1.0 or 1.1), we definitively close the
++ * connection.  If the "Connection" header is not exactly "close" or
++ * "keep-alive", we proceed to use the default for the respective HTTP
++ * version (which is conservative for HTTP 1.0, but might be a bit
++ * optimistic for HTTP 1.1).
++ * In the case of Upgrade, the connection should be kept alive even if
++ * the header Connection is not keep-alive.
++ *
++ * @param connection the connection to check for keepalive
++ * @return #MHD_YES if (based on the request), a keepalive is
++ *        legal
++ */
++static int
++should_keepalive (struct MHD_Connection *connection)
++{
++  const char *end;
++
++  if (NULL == connection->version)
++    return MHD_NO;
++  if ( (NULL != connection->response) &&
++       (0 != (connection->response->flags & MHD_RF_HTTP_VERSION_1_0_ONLY) ) )
++    return MHD_NO;
++  end = MHD_lookup_connection_value (connection,
++                                     MHD_HEADER_KIND,
++                                     MHD_HTTP_HEADER_CONNECTION);
++  if (MHD_str_equal_caseless_(connection->version,
++                       MHD_HTTP_VERSION_1_1))
++  {
++    if (NULL == end)
++      return MHD_YES;
 +    if ( (MHD_str_equal_caseless_ (end, "close")) )
-       return MHD_NO;
-    return MHD_YES;
-   }
-
++      return MHD_NO;
++   return MHD_YES;
++  }
++  if (MHD_str_equal_caseless_(connection->version,
++                       MHD_HTTP_VERSION_1_0))
++  {
++    if (NULL == end)
++      return MHD_NO;
++    if (MHD_str_equal_caseless_(end, "Keep-Alive"))
++      return MHD_YES;
++    return MHD_NO;
++  }
++  return MHD_NO;
++}
++
++
++/**
+  * Produce HTTP "Date:" header.
+  *
+  * @param date where to write the header, with
+@@ -2795,7 +2850,7 @@
+             }
+           if (((MHD_YES == connection->read_closed) &&
+                (0 == connection->read_buffer_offset)) ||
+-              (MHD_NO == keepalive_possible (connection)))
++              (MHD_NO == should_keepalive (connection)))
+             {
+               /* have to close for some reason */
+               MHD_connection_close_ (connection,
