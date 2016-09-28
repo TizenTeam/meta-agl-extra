@@ -1,6 +1,6 @@
 DISTRO_FEATURES_append = " agl-ota"
 
-IMAGE_INSTALL_append = " otaimg"
+IMAGE_INSTALL_append = " ostree"
 
 # live image for OSTree-enabled systems
 IMAGE_CLASSES += "image_types_ostree image_types_ota"
@@ -16,4 +16,5 @@ PREFERRED_PROVIDER_virtual/bootloader_qemux86-64 ?= "u-boot-ota"
 OSTREE_REPO ?= "${DEPLOY_DIR_IMAGE}/ostree_repo"
 OSTREE_BRANCHNAME ?= "agl-ota"
 OSTREE_OSNAME ?= "agl"
+OSTREE_INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
