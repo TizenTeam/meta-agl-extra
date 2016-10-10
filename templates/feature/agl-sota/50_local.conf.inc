@@ -11,6 +11,8 @@ UBOOT_MACHINE_qemux86-64 = "qemu-x86_defconfig"
 
 PREFERRED_PROVIDER_virtual/bootloader_qemux86 ?= "u-boot-ota"
 PREFERRED_PROVIDER_virtual/bootloader_qemux86-64 ?= "u-boot-ota"
+PREFERRED_PROVIDER_virtual/bootloader_raspberrypi3 ?= "u-boot-ota"
+PREFERRED_PROVIDER_virtual/bootloader_raspberrypi2 ?= "u-boot-ota"
 
 # Please redefine OSTREE_REPO in order to have a persistent OSTree repo
 OSTREE_REPO ?= "${DEPLOY_DIR_IMAGE}/ostree_repo"
