@@ -3,16 +3,18 @@ From: =?UTF-8?q?Jos=C3=A9=20Bollo?= <jose.bollo@iot.bzh>
 Date: Fri, 22 Jan 2016 16:23:59 +0100
 Subject: [PATCH] removing capability enforcement
 
+Signed-off-by: ronan <ronan@iot.bzh>
+
 Change-Id: Idb724192ceab176a611bbed45c0ebc9c8eb5dd30
 ---
- progs/setcap.c | 43 -------------------------------------------
- 1 file changed, 43 deletions(-)
+ progs/setcap.c | 45 +--------------------------------------------
+ 1 file changed, 1 insertion(+), 44 deletions(-)
 
 diff --git a/progs/setcap.c b/progs/setcap.c
-index 83090ae..01faa17 100644
+index 7304343..71999b6 100644
 --- a/progs/setcap.c
 +++ b/progs/setcap.c
-@@ -58,7 +58,6 @@ static int read_caps(int quiet, const char *filename, char *buffer)
+@@ -58,11 +58,9 @@ static int read_caps(int quiet, const char *filename, char *buffer)
  
  int main(int argc, char **argv)
  {
@@ -20,7 +22,11 @@ index 83090ae..01faa17 100644
      char buffer[MAXCAP+1];
      int retval, quiet=0, verify=0;
      cap_t mycaps;
-@@ -150,53 +149,11 @@ int main(int argc, char **argv)
+-    cap_value_t capflag;
+ 
+     if (argc < 3) {
+ 	usage();
+@@ -150,54 +148,13 @@ int main(int argc, char **argv)
  		printf("%s: OK\n", *argv);
  	    }
  	} else {
@@ -45,6 +51,7 @@ index 83090ae..01faa17 100644
  	    retval = cap_set_file(*++argv, cap_d);
  	    if (retval != 0) {
 -		int explained = 0;
+ 		int oerrno = errno;
 -#ifdef linux
 -		cap_value_t cap;
 -		cap_flag_value_t per_state;
@@ -67,13 +74,14 @@ index 83090ae..01faa17 100644
 -		
  		fprintf(stderr,
  			"Failed to set capabilities on file `%s' (%s)\n",
- 			argv[0], strerror(errno));
+ 			argv[0], strerror(oerrno));
 -		if (!explained) {
 -		    usage();
 -		}
++
  	    }
  	}
  	if (cap_d) {
 -- 
-2.1.4
+2.6.6
 
