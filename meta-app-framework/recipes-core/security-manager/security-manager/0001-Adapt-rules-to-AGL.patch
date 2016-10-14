@@ -1,0 +1,50 @@
+From 935e4e4e746b5ffcda80c80097dc75c2581c1a89 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jos=C3=A9=20Bollo?= <jose.bollo@iot.bzh>
+Date: Wed, 19 Oct 2016 13:45:54 +0200
+Subject: [PATCH] Adapt rules to AGL
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+AGL distribution uses the repository https://github.com/01org/meta-intel-iot-security.git
+as basis for the integration of security framework. The security framework
+that it provides is an evolution of the security framework of tizen refited
+to the distribution Ostro of Intel. This refit took the decision to simplify
+the model by removing the running label "User". More can be viewed here:
+https://github.com/01org/meta-intel-iot-security/pull/116
+
+This commits adapt the template to the rules that are now needed
+after this evolution.
+
+It also integrates one other evolutions: the shared label becomes User::App-Shared instead
+of User::App::Shared to avoid collision with application of id "Shared".
+
+Change-Id: Ieb566b63f8c8e691b5f75e06499a3b576d042546
+Signed-off-by: José Bollo <jose.bollo@iot.bzh>
+---
+ policy/app-rules-template.smack | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/policy/app-rules-template.smack b/policy/app-rules-template.smack
+index 1311169..b4cd2e3 100644
+--- a/policy/app-rules-template.smack
++++ b/policy/app-rules-template.smack
+@@ -1,12 +1,10 @@
+-System ~APP~ rwx
++System ~APP~ rwxa
++System ~PKG~ rwxat
+ ~APP~ System wx
+ ~APP~ System::Shared rx
+ ~APP~ System::Run rwxat
+ ~APP~ System::Log rwxa
+ ~APP~ _ l
+-User ~APP~ rwxa
+-User ~PKG~ rwxat
+-~APP~ User wx
+ ~APP~ User::Home rxl
+-~APP~ User::App::Shared rwxat
++~APP~ User::App-Shared rwxat
+ ~APP~ ~PKG~ rwxat
+-- 
+2.7.4
+

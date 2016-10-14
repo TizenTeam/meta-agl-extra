@@ -52,18 +52,30 @@ do_install_append() {
     fi
 }
 
+do_install_append_smack () {
+    install -d ${D}/${sysconfdir}/smack/accesses.d
+    cat > ${D}/${sysconfdir}/smack/accesses.d/default-access-domains-no-user <<EOF
+System User::App-Shared rwxat
+System User::Home       rwxat
+EOF
+    chmod 0644 ${D}/${sysconfdir}/smack/accesses.d/default-access-domains-no-user
+    install -d ${D}/${sysconfdir}/skel/app-data
+    chsmack -a 'User::Home' -t -D ${D}/${sysconfdir}/skel
+    chsmack -a 'User::App-Shared' -D ${D}/${sysconfdir}/skel/app-data
+}
+
 pkg_postinst_${PN}() {
     mkdir -p $D${afm_datadir}/applications $D${afm_datadir}/icons
-    setcap cap_mac_override,cap_dac_override=ie $D${bindir}/afm-system-daemon
-    setcap cap_mac_override,cap_mac_admin,cap_setgid=ie $D${bindir}/afm-user-daemon
+    setcap cap_mac_override,cap_dac_override=ep $D${bindir}/afm-system-daemon
+    setcap cap_mac_override,cap_mac_admin,cap_setgid=ep $D${bindir}/afm-user-daemon
 }
 
 pkg_postinst_${PN}_smack() {
     mkdir -p $D${afm_datadir}/applications $D${afm_datadir}/icons
     chown ${afm_name}:${afm_name} $D${afm_datadir} $D${afm_datadir}/applications $D${afm_datadir}/icons
     chsmack -a 'System::Shared' -t $D${afm_datadir} $D${afm_datadir}/applications $D${afm_datadir}/icons
-    setcap cap_mac_override,cap_dac_override=ie $D${bindir}/afm-system-daemon
-    setcap cap_mac_override,cap_mac_admin,cap_setgid=ie $D${bindir}/afm-user-daemon
+    setcap cap_mac_override,cap_dac_override=ep $D${bindir}/afm-system-daemon
+    setcap cap_mac_override,cap_mac_admin,cap_setgid=ep $D${bindir}/afm-user-daemon
 }
 
 PACKAGES =+ "${PN}-binding ${PN}-binding-dbg"
