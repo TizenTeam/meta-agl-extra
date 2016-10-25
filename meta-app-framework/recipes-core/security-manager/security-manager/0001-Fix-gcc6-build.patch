@@ -1,0 +1,38 @@
+From cb9acc2b723b297ee373bf814282711f02657aa5 Mon Sep 17 00:00:00 2001
+From: Ronan <ronan.lemartret@iot.bzh>
+Date: Wed, 12 Oct 2016 17:48:55 +0200
+Subject: [PATCH] Fix gcc6 build
+
+Signed-off-by: ronan <ronan@ot.bzh>
+---
+ src/client/client-security-manager.cpp | 1 +
+ src/common/include/privilege_db.h      | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/client/client-security-manager.cpp b/src/client/client-security-manager.cpp
+index 74a6b30..347cddd 100644
+--- a/src/client/client-security-manager.cpp
++++ b/src/client/client-security-manager.cpp
+@@ -46,6 +46,7 @@
+ #include <service_impl.h>
+ #include <security-manager.h>
+ #include <client-offline.h>
++#include <linux/xattr.h>
+
+ static const char *EMPTY = "";
+
+diff --git a/src/common/include/privilege_db.h b/src/common/include/privilege_db.h
+index 03c6680..8dd39a1 100644
+--- a/src/common/include/privilege_db.h
++++ b/src/common/include/privilege_db.h
+@@ -32,6 +32,7 @@
+ #include <map>
+ #include <stdbool.h>
+ #include <string>
++#include <vector>
+
+ #include <dpl/db/sql_connection.h>
+
+-- 
+2.6.6
+

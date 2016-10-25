@@ -1,0 +1,40 @@
+From 19c99315a5dcba3b696c30d1fdd42a1dcd574a80 Mon Sep 17 00:00:00 2001
+From: Ronan <ronan.lemartret@iot.bzh>
+Date: Thu, 13 Oct 2016 11:37:47 +0200
+Subject: [PATCH] Fix Cmake conf for gcc6 build
+
+Signed-off-by: Ronan <ronan.lemartret@iot.bzh>
+---
+ src/cmd/CMakeLists.txt    | 4 +---
+ src/server/CMakeLists.txt | 1 -
+ 2 files changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/cmd/CMakeLists.txt b/src/cmd/CMakeLists.txt
+index ee9a160..aa7a12c 100644
+--- a/src/cmd/CMakeLists.txt
++++ b/src/cmd/CMakeLists.txt
+@@ -1,8 +1,6 @@
+ FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options)
+ 
+-INCLUDE_DIRECTORIES(SYSTEM
+-    ${Boost_INCLUDE_DIRS}
+-    )
++
+ 
+ INCLUDE_DIRECTORIES(
+     ${INCLUDE_PATH}
+diff --git a/src/server/CMakeLists.txt b/src/server/CMakeLists.txt
+index 753eb96..8eef25d 100644
+--- a/src/server/CMakeLists.txt
++++ b/src/server/CMakeLists.txt
+@@ -8,7 +8,6 @@ FIND_PACKAGE(Threads REQUIRED)
+ 
+ INCLUDE_DIRECTORIES(SYSTEM
+     ${SERVER_DEP_INCLUDE_DIRS}
+-    ${Boost_INCLUDE_DIRS}
+     ${Threads_INCLUDE_DIRS}
+     )
+ 
+-- 
+2.6.6
+
