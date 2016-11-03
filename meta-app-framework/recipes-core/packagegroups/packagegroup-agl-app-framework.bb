@@ -16,5 +16,5 @@ RDEPENDS_${PN} += "\
 	af-binder-binding-authlogin \
 	libafbwsc \
 	af-main \
-	web-runtime \
+	${@bb.utils.contains('DISTRO_FEATURES', 'AGL_WEBRUNTIME', 'web-runtime', '', d)} \
     "
