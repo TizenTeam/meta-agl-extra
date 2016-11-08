@@ -1,2 +1,3 @@
 #!/bin/sh
+export QT_WAYLAND_SHELL_INTEGRATION="ivi-shell"
 exec /usr/bin/qt5/qmlscene "$1" /usr/bin/web-runtime-webkit.qml
