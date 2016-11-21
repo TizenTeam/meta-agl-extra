@@ -1,0 +1,24 @@
+diff --git a/conf/afm-user-daemon.service b/conf/afm-user-daemon.service
+index 6b5c1d8..e0f6799 100644
+--- a/conf/afm-user-daemon.service
++++ b/conf/afm-user-daemon.service
+@@ -7,6 +7,7 @@ BusName=org.AGL.afm.user
+ ExecStart=/usr/bin/afm-user-daemon --user-dbus=unix:path=%t/bus
+ Environment=AFM_APP_INSTALL_DIR=%%r
+ Environment=LD_PRELOAD=/usr/lib/libEGL.so
++Environment=QT_WAYLAND_SHELL_INTEGRATION=ivi-shell
+ Restart=on-failure
+ RestartSec=5
+ 
+diff --git a/docs/quick-tutorial.md b/docs/quick-tutorial.md
+index 081dfe5..f55d4d0 100644
+--- a/docs/quick-tutorial.md
++++ b/docs/quick-tutorial.md
+@@ -29,6 +29,7 @@ Using the CLI tool
+ 
+ ### Setup Environment
+ Connect your AGL target board to the network and copy some sample widgets on it through SSH (set BOARDIP with your board IP address) :
++
+ ```
+ $ cd afm-widget-examples
+ $ BOARDIP=1.2.3.4

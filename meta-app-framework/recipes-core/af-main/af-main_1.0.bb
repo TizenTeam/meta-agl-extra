@@ -42,8 +42,11 @@ FILES_${PN} += "\
 RDEPENDS_${PN}_append_smack = " smack-userspace"
 DEPENDS_append_smack = " smack-userspace-native"
 
-# short hack here
-SRC_URI += " file://Hack-to-allow-the-debugging.patch"
+# short hacks here
+SRC_URI += "\
+	file://Hack-to-allow-the-debugging.patch \
+	file://add-qt-wayland-shell-integration.patch \
+"
 
 do_install_append() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
