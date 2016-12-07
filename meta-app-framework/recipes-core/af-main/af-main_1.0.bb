@@ -7,15 +7,26 @@ require af-main_${PV}.inc
 # NOTE: using ZIP programs creates directories with mode 777 (very bad)
 
 inherit cmake pkgconfig useradd systemd
+BBCLASSEXTEND = "native"
 
 SECTION = "base"
 
 DEPENDS = "openssl libxml2 xmlsec1 systemd libzip json-c security-manager libcap-native af-binder"
+DEPENDS_class-native = "openssl libxml2 xmlsec1 libzip"
 
 afm_name    = "afm"
 afm_confdir = "${sysconfdir}/${afm_name}"
 afm_datadir = "${datadir}/${afm_name}"
 afb_binding_dir = "${libdir}/afb"
+
+EXTRA_OECMAKE_class-native  = "\
+	-DUSE_LIBZIP=1 \
+	-DUSE_SIMULATION=1 \
+	-DUSE_SDK=1 \
+	-Dafm_name=${afm_name} \
+	-Dafm_confdir=${afm_confdir} \
+	-Dafm_datadir=${afm_datadir} \
+"
 
 EXTRA_OECMAKE = "\
 	-DUSE_LIBZIP=1 \
