@@ -16,7 +16,8 @@ DEPENDS_class-native = "openssl libxml2 xmlsec1 libzip"
 
 afm_name    = "afm"
 afm_confdir = "${sysconfdir}/${afm_name}"
-afm_datadir = "${datadir}/${afm_name}"
+afm_datadir = "/var/lib/${afm_name}"
+afm_init_datadir = "${datadir}/${afm_name}"
 afb_binding_dir = "${libdir}/afb"
 
 EXTRA_OECMAKE_class-native  = "\
@@ -46,8 +47,12 @@ GROUPADD_PARAM_${PN} = "-r ${afm_name}"
 SYSTEMD_SERVICE_${PN} = "afm-system-daemon.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
+SRC_URI_append = "file://init-afm-dirs.sh \
+		  ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://init-afm-dirs.service', '', d)}"
+
 FILES_${PN} += "\
-	${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_user_unitdir}/afm-user-daemon.service', '', d)} \
+	${bindir}/init-afm-dirs.sh \
+	${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_user_unitdir}/afm-user-daemon.service ${systemd_unitdir}/system/init-afm-dirs.service', '', d)} \
 "
 
 RDEPENDS_${PN}_append_smack = " smack-userspace"
@@ -60,9 +65,14 @@ SRC_URI += "\
 "
 
 do_install_append() {
+    install -d ${D}${bindir}
+    install -m 0755 ${WORKDIR}/init-afm-dirs.sh ${D}${bindir}
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         mkdir -p ${D}${sysconfdir}/systemd/user/default.target.wants
+        mkdir -p ${D}${sysconfdir}/systemd/system/default.target.wants
         ln -sf ${systemd_user_unitdir}/afm-user-daemon.service ${D}${sysconfdir}/systemd/user/default.target.wants
+	install -p -D ${WORKDIR}/init-afm-dirs.service ${D}${systemd_unitdir}/system/init-afm-dirs.service
+	ln -sf ${systemd_unitdir}/system/init-afm-dirs.service ${D}${sysconfdir}/systemd/system/default.target.wants
     fi
 }
 
@@ -79,15 +89,15 @@ EOF
 }
 
 pkg_postinst_${PN}() {
-    mkdir -p $D${afm_datadir}/applications $D${afm_datadir}/icons
+    mkdir -p $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
     setcap cap_mac_override,cap_dac_override=ep $D${bindir}/afm-system-daemon
     setcap cap_mac_override,cap_mac_admin,cap_setgid=ep $D${bindir}/afm-user-daemon
 }
 
 pkg_postinst_${PN}_smack() {
-    mkdir -p $D${afm_datadir}/applications $D${afm_datadir}/icons
-    chown ${afm_name}:${afm_name} $D${afm_datadir} $D${afm_datadir}/applications $D${afm_datadir}/icons
-    chsmack -a 'System::Shared' -t $D${afm_datadir} $D${afm_datadir}/applications $D${afm_datadir}/icons
+    mkdir -p $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
+    chown ${afm_name}:${afm_name} $D${afm_init_datadir} $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
+    chsmack -a 'System::Shared' -t $D${afm_init_datadir} $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
     setcap cap_mac_override,cap_dac_override=ep $D${bindir}/afm-system-daemon
     setcap cap_mac_override,cap_mac_admin,cap_setgid=ep $D${bindir}/afm-user-daemon
 }

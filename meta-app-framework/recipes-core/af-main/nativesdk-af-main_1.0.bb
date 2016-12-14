@@ -8,7 +8,7 @@ DEPENDS = "nativesdk-openssl nativesdk-libxml2 nativesdk-xmlsec1 nativesdk-libzi
 
 afm_name    = "afm"
 afm_confdir = "${sysconfdir}/${afm_name}"
-afm_datadir = "${datadir}/${afm_name}"
+afm_datadir = "/var/lib/${afm_name}"
 
 EXTRA_OECMAKE = "\
 	-DUSE_LIBZIP=1 \
