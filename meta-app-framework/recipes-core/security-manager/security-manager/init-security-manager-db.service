@@ -1,0 +1,15 @@
+#
+# Install security-manager DB to /var
+
+[Unit]
+Description=Install Security Manager database
+After=sysinit.target
+Before=security-manager.service
+
+[Install]
+WantedBy=default.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/init-security-manager-db.sh

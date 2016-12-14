@@ -2,7 +2,7 @@
 Description=Simplest application manager
 
 [Service]
-ExecStart=/usr/bin/afb-daemon --mode=remote --port=1234 --token='' --sessiondir=/home/root/.afb-daemon --rootdir=/usr/share/agl/afm-client --alias=/icons:/usr/share/afm/icons
+ExecStart=/usr/bin/afb-daemon --mode=remote --port=1234 --token='' --sessiondir=/home/root/.afb-daemon --rootdir=/usr/share/agl/afm-client --alias=/icons:/var/lib/afm/icons
 Restart=on-failure
 RestartSec=5
 

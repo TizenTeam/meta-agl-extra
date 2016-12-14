@@ -1,0 +1,15 @@
+#
+# Install security-manager DB to /var
+
+[Unit]
+Description=Deploy AFM directories to /var
+After=sysinit.target
+Before=afm-system-daemon.service
+Before=afm-user-daemon.service
+
+[Install]
+WantedBy=default.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/init-afm-dirs.sh
