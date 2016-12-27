@@ -81,13 +81,14 @@ network is set up correctly.
 
 ```bash
 # agl-remote identifies the remote server in your local repo
-ostree remote add --no-gpg-verify agl-remote http://192.168.7.1:57556 agl-ota
+ostree remote add --no-gpg-verify agl-remote http://192.168.7.1:57556 agl-ota-raspberrypi3
     
-# agl-ota is a branch name in the remote repo, set in OSTREE_BRANCHNAME
-ostree pull agl-remote agl-ota
+# agl-ota-raspberrypi3 is a branch name in the remote repo, set in OSTREE_BRANCHNAME
+#   default value for OSTREE_BRANCHNAME is "agl-ota-${MACHINE}"
+ostree pull agl-remote agl-ota-raspberrypi3
     
 # agl is OS name as set in OSTREE_OSNAME
-ostree admin deploy --os=agl agl-remote:agl-ota
+ostree admin deploy --os=agl agl-remote:agl-ota-raspberrypi3
 ```
 
 After restart you should boot into the newly deployed OS image.
@@ -99,10 +100,10 @@ E.g. for the raspberrypi3 you can try this sequence:
 ostree remote add --no-gpg-verify agl-snapshot https://download.automotivelinux.org/AGL/snapshots/master/latest/raspberrypi3/deploy/images/raspberrypi3/ostree_repo/ agl-ota
  
 # pull
-ostree pull agl-snapshot agl-ota
+ostree pull agl-snapshot agl-ota-raspberrypi3
     
 # deploy
-ostree admin deploy --os=agl agl-snapshot:agl-ota
+ostree admin deploy --os=agl agl-snapshot:agl-ota-raspberrypi3
 ```
 
 ### SOTA tools ###
