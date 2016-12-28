@@ -33,5 +33,5 @@ do_aglwgt_deploy() {
 
 FILES_${PN} += "/usr/AGL/apps/*.wgt"
 
-addtask aglwgt_package before do_build after do_compile
-addtask aglwgt_deploy  before do_build after do_install
+addtask aglwgt_deploy  before do_package after do_install
+addtask aglwgt_package before do_aglwgt_deploy after do_compile
