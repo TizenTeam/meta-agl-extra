@@ -31,7 +31,7 @@ do_aglwgt_deploy() {
         install -m 0644 ${B}/package/*.wgt ${D}/usr/AGL/apps/
 }
 
-FILES_${PN} += " /usr/AGL/apps/*.wgt "
+FILES_${PN} += "/usr/AGL/apps/*.wgt"
 
 addtask aglwgt_package before do_build after do_compile
 addtask aglwgt_deploy  before do_build after do_install
