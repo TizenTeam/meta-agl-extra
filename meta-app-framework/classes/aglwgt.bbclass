@@ -26,6 +26,10 @@ do_aglwgt_package()  {
                         )
 }
 
+python () {
+    d.setVarFlag('do_aglwgt_deploy', 'fakeroot', '1')
+}
+
 do_aglwgt_deploy() {
         install -d ${D}/usr/AGL/apps
         install -m 0644 ${B}/package/*.wgt ${D}/usr/AGL/apps/
