@@ -10,13 +10,13 @@ LIC_FILES_CHKSUM = "file://LICENSE-2.0.txt;md5=3b83ef96387f14655fc854ddc3c6bd57"
 DEPENDS = "file json-c libmicrohttpd systemd util-linux"
 DEPENDS += "alsa-lib glib-2.0 gssdp gupnp gupnp-av pulseaudio"
 
-SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-binder;protocol=https;branch=master"
+SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-binder;protocol=https;branch=chinook"
 SRC_URI_files = ""
 SRC_URI = "${SRC_URI_git} \
            ${SRC_URI_files} \
           "
 
-SRCREV = "dcdb2427f80a325fad889586c8696a2b684d6a61"
+SRCREV = "6c594bea53577e59a4951049b06d33e64c11f7a9"
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig
