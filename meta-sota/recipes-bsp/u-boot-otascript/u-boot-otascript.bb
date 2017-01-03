@@ -7,7 +7,8 @@ DEPENDS = "u-boot-mkimage-native"
 COMPATIBLE_MACHINE = "raspberrypi"
 
 SRC_URI = "file://boot.scr \
-	   file://uEnv.txt"
+	   file://uEnv.txt \
+	   file://uEnv.cma.txt"
 
 S = "${WORKDIR}"
 
@@ -17,7 +18,11 @@ do_deploy() {
     install -d ${DEPLOYDIR}/bcm2835-bootfiles
 
     mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ostree boot script" -d ${S}/boot.scr ${DEPLOYDIR}/bcm2835-bootfiles/boot.scr
-    install -m 0755 ${S}/uEnv.txt ${DEPLOYDIR}/bcm2835-bootfiles/uEnv.txt
+    if [ "${ENABLE_CMA}" = "1" ]; then
+        install -m 0755 ${S}/uEnv.cma.txt ${DEPLOYDIR}/bcm2835-bootfiles/uEnv.txt
+    else
+        install -m 0755 ${S}/uEnv.txt ${DEPLOYDIR}/bcm2835-bootfiles/uEnv.txt
+    fi
 }
 
 addtask deploy before do_package after do_install
