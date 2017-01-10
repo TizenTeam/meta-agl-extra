@@ -9,6 +9,7 @@ BBLAYERS =+ " \
 BBLAYERS =+ " \
    ${METADIR}/meta-oic \
    ${METADIR}/meta-iot-web \
+   ${METADIR}/meta-ocf-automotive \
    ${METADIR}/meta-qt5 \
 "
 
