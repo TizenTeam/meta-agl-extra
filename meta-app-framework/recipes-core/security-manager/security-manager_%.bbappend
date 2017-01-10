@@ -2,7 +2,10 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/security-manager:"
 
 SRC_URI += " file://0001-Adapt-rules-to-AGL.patch \
 	     file://init-security-manager-db.service \
-	     file://init-security-manager-db.sh"
+	     file://init-security-manager-db.sh \
+             file://0001-Fix-gcc6-build.patch \
+             file://0001-Fix-Cmake-conf-for-gcc6-build.patch \
+"
 
 FILES_${PN}_append = "${bindir}/init-security-manager-db.sh \
 		      ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/init-security-manager-db.service', '', d)} \
