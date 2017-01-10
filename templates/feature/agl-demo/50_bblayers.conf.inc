@@ -8,6 +8,7 @@ BBLAYERS =+ " \
 #-------------------------------------------------
 BBLAYERS =+ " \
    ${METADIR}/meta-oic \
+   ${METADIR}/meta-iot-web \
    ${METADIR}/meta-qt5 \
 "
 
