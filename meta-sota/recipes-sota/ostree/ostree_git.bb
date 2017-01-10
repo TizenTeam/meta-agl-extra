@@ -14,7 +14,7 @@ S = "${WORKDIR}/git"
 
 BBCLASSEXTEND = "native"
 
-DEPENDS += "attr libarchive glib-2.0 pkgconfig gpgme libgsystem fuse libsoup-2.4 e2fsprogs systemd"
+DEPENDS += "attr libarchive glib-2.0 pkgconfig gpgme libgsystem fuse libsoup-2.4 e2fsprogs systemd gtk-doc-native"
 DEPENDS_remove_class-native = "systemd-native"
 
 RDEPENDS_${PN} = "python util-linux-libuuid util-linux-libblkid util-linux-libmount libcap xz"
@@ -40,6 +40,7 @@ export STAGING_INCDIR
 export STAGING_LIBDIR
 
 do_configure() {
+ unset docdir
  NOCONFIGURE=true ./autogen.sh
  oe_runconf
 }
