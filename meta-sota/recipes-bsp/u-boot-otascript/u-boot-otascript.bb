@@ -7,8 +7,10 @@ DEPENDS = "u-boot-mkimage-native"
 COMPATIBLE_MACHINE = "raspberrypi"
 
 SRC_URI = "file://boot.scr \
-	   file://uEnv.txt \
-	   file://uEnv.cma.txt"
+           file://uEnv.txt \
+           file://uEnv.cma.txt \
+           file://0001-fixup-build-with-gcc6.patch \
+          "
 
 S = "${WORKDIR}"
 
