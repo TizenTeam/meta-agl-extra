@@ -30,7 +30,7 @@ SYSTEMD_REQUIRED_class-native = ""
 SYSTEMD_SERVICE_${PN} = "ostree-prepare-root.service ostree-remount.service"
 SYSTEMD_SERVICE_${PN}_class-native = ""
 
-PACKAGECONFIG ??= "${@base_contains('DISTRO_FEATURES', 'systemd', 'systemd', '', d)}"
+PACKAGECONFIG ??= "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd', '', d)}"
 PACKAGECONFIG_class-native = ""
 PACKAGECONFIG[systemd] = "--with-systemdsystemunitdir=${systemd_unitdir}/system/ --with-dracut"
 
