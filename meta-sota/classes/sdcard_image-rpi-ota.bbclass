@@ -125,8 +125,10 @@ IMAGE_CMD_rpi-sdimg-ota () {
 		# Copy device tree overlays to dedicated folder
 		mmd -i ${WORKDIR}/boot.img overlays
 		for DTB in ${DT_OVERLAYS}; do
-			DTB_BASE_NAME=`basename ${DTB} .dtb`
-			mcopy -i ${WORKDIR}/boot.img -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTB_BASE_NAME}.dtb ::overlays/${DTB_BASE_NAME}.dtbo
+			DTB_EXT=${DTB##*.}
+			DTB_BASE_NAME=`basename ${DTB} ."${DTB_EXT}"`
+
+			mcopy -i ${WORKDIR}/boot.img -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTB_BASE_NAME}.${DTB_EXT} ::overlays/${DTB_BASE_NAME}.${DTB_EXT}
 		done
 	fi
 
@@ -174,6 +176,9 @@ IMAGE_CMD_rpi-sdimg-ota () {
 		xz -k "${SDIMG_OTA}"
 		;;
 	esac
+
+	rm -f ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.rootfs.rpi-sdimg-ota
+	ln -s ${IMAGE_NAME}.rootfs.rpi-sdimg-ota ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.rootfs.rpi-sdimg-ota
 }
 
 ROOTFS_POSTPROCESS_COMMAND += " rpi_generate_sysctl_config ; "

@@ -9,7 +9,7 @@ S = "${WORKDIR}/git"
 
 inherit autotools-brokensep gobject-introspection
 
-DEPENDS += "attr glib-2.0 pkgconfig libcap gtk-doc-native"
+DEPENDS += "attr glib-2.0 pkgconfig libcap gtk-doc-native gpgme"
 RDEPENDS_${PN} = "xz systemd"
 
 RDEPENDS_${PN}_remove_class-native = "systemd-native"

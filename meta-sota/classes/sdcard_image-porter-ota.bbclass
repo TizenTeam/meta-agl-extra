@@ -71,5 +71,8 @@ IMAGE_CMD_porter-sdimg-ota () {
 		xz -k "${SDIMG_OTA}"
 		;;
 	esac
+
+	rm -f ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.rootfs.porter-sdimg-ota
+	ln -s ${IMAGE_NAME}.rootfs.porter-sdimg-ota ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.rootfs.porter-sdimg-ota
 }
 
