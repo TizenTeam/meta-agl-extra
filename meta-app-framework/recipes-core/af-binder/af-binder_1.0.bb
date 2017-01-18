@@ -7,7 +7,7 @@ HOMEPAGE = "https://gerrit.automotivelinux.org/gerrit/#/admin/projects/src/app-f
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE-2.0.txt;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
-DEPENDS = "file json-c libmicrohttpd systemd util-linux"
+DEPENDS = "file json-c libmicrohttpd systemd util-linux openssl"
 
 SRC_URI_git = "git://gerrit.automotivelinux.org/gerrit/src/app-framework-binder;protocol=https;branch=master"
 SRC_URI_files = ""
