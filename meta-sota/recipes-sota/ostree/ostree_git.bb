@@ -8,7 +8,7 @@ INHERIT_remove_class-native = "systemd"
 
 SRC_URI = "gitsm://github.com/ostreedev/ostree.git;branch=master"
 
-SRCREV="37c07d2f1c90b12bcfba85a7d900f81a7c362eb4"
+SRCREV="6517a8a27a1386e7cb5482e7cb2919fe92721ccf"
 
 S = "${WORKDIR}/git"
 
@@ -41,7 +41,7 @@ export STAGING_LIBDIR
 
 do_configure() {
  unset docdir
- NOCONFIGURE=true ./autogen.sh
+ NOCONFIGURE=1 ./autogen.sh
  oe_runconf
 }
 
