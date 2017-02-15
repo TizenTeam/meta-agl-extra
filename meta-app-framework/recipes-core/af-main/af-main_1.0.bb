@@ -64,6 +64,11 @@ SRC_URI += "\
 	file://add-qt-wayland-shell-integration.patch \
 "
 
+# tools used to install wgt at first boot
+SRC_URI += "\
+	file://afm-install \
+"
+
 do_install_append() {
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/init-afm-dirs.sh ${D}${bindir}
@@ -74,6 +79,7 @@ do_install_append() {
 	install -p -D ${WORKDIR}/init-afm-dirs.service ${D}${systemd_unitdir}/system/init-afm-dirs.service
 	ln -sf ${systemd_unitdir}/system/init-afm-dirs.service ${D}${sysconfdir}/systemd/system/default.target.wants
     fi
+    install -m 0755 ${WORKDIR}/afm-install ${D}${bindir}
 }
 
 do_install_append_smack () {
