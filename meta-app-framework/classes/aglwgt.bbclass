@@ -41,7 +41,7 @@ do_aglwgt_deploy() {
     install -m 0644 ${B}/package/*.wgt ${D}/usr/AGL/apps/
     APP_FILES=""
     for file in ${D}/usr/AGL/apps/*.wgt;do
-        APP_FILES+=" "$(basename $file);
+        APP_FILES="${APP_FILES} $(basename $file)";
     done
     install -d ${D}/${sysconfdir}/agl-postinsts
     cat > ${D}/${sysconfdir}/agl-postinsts/${POST_INSTALL_SCRIPT} <<EOF
