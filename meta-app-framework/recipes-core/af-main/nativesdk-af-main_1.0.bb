@@ -4,7 +4,7 @@ inherit nativesdk cmake pkgconfig
 
 SECTION = "base"
 
-DEPENDS = "nativesdk-openssl nativesdk-libxml2 nativesdk-xmlsec1 nativesdk-libzip"
+DEPENDS = "nativesdk-openssl nativesdk-libxml2 nativesdk-xmlsec1 nativesdk-libzip nativesdk-json-c"
 
 afm_name    = "afm"
 afm_confdir = "${sysconfdir}/${afm_name}"

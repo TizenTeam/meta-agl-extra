@@ -12,7 +12,7 @@ BBCLASSEXTEND = "native"
 SECTION = "base"
 
 DEPENDS = "openssl libxml2 xmlsec1 systemd libzip json-c security-manager libcap-native af-binder"
-DEPENDS_class-native = "openssl libxml2 xmlsec1 libzip"
+DEPENDS_class-native = "openssl libxml2 xmlsec1 libzip json-c"
 
 afm_name    = "afm"
 afm_confdir = "${sysconfdir}/${afm_name}"
