@@ -8,7 +8,7 @@ INHERIT_remove_class-native = "systemd"
 
 SRC_URI = "gitsm://github.com/ostreedev/ostree.git;branch=master"
 
-SRCREV="6517a8a27a1386e7cb5482e7cb2919fe92721ccf"
+SRCREV="0817be61a17cc8b770cad54196182ac9c3109caf"
 
 S = "${WORKDIR}/git"
 
@@ -20,8 +20,7 @@ DEPENDS_remove_class-native = "systemd-native"
 RDEPENDS_${PN} = "python util-linux-libuuid util-linux-libblkid util-linux-libmount libcap xz"
 RDEPENDS_${PN}_remove_class-native = "python-native"
 
-EXTRA_OECONF = "CFLAGS='-g' --with-libarchive --disable-gtk-doc --disable-gtk-doc-html --disable-gtk-doc-pdf --disable-man"
-EXTRA_OEMAKE = "CFLAGS='-g'"
+EXTRA_OECONF = "--with-libarchive --disable-gtk-doc --disable-gtk-doc-html --disable-gtk-doc-pdf --disable-man --with-smack"
 EXTRA_OECONF_append_class-native = " --enable-wrpseudo-compat"
 
 SYSTEMD_REQUIRED = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}"
