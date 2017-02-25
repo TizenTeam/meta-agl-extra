@@ -82,6 +82,10 @@ do_install_append() {
     install -m 0755 ${WORKDIR}/afm-install ${D}${bindir}
 }
 
+do_install_append_qemux86-64() {
+    sed -i -e '/LD_PRELOAD=\/usr\/lib\/libEGL.so/d' ${D}${systemd_user_unitdir}/afm-user-daemon.service
+}
+
 do_install_append_smack () {
     install -d ${D}/${sysconfdir}/smack/accesses.d
     cat > ${D}/${sysconfdir}/smack/accesses.d/default-access-domains-no-user <<EOF
