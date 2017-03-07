@@ -1,0 +1,45 @@
+From 008637fc8bd7f601eb6554d572bba025613913b7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jos=C3=A9=20Bollo?= <jose.bollo@iot.bzh>
+Date: Wed, 8 Mar 2017 14:10:10 +0100
+Subject: [PATCH] useradd: copy extended attributes of home (native)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The Home directory wasn't getting the extended attributes
+of /etc/skel. This patch fixes that issue and adds the copy
+of the extended attributes of the root of the home directory.
+
+Change-Id: Ib6836e1b18c4c7f73e02c1f1fc9558dc749ba9da
+Signed-off-by: José Bollo <jose.bollo@iot.bzh>
+---
+ src/useradd.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/useradd.c b/src/useradd.c
+index 4c418af..8ba8af6 100644
+--- a/src/useradd.c
++++ b/src/useradd.c
+@@ -55,6 +55,9 @@
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <time.h>
++#ifdef WITH_ATTR
++#include <attr/libattr.h>
++#endif
+ #include "chkname.h"
+ #include "defines.h"
+ #include "faillog.h"
+@@ -1950,6 +1953,9 @@ static void create_home (void)
+ 	chown (user_home, user_id, user_gid);
+ 	chmod (user_home,
+ 	       0777 & ~getdef_num ("UMASK", GETDEF_DEFAULT_UMASK));
++#ifdef WITH_ATTR
++	attr_copy_file (def_template, user_home, NULL, NULL);
++#endif
+ 	home_added = true;
+ #ifdef WITH_AUDIT
+ 	audit_logger (AUDIT_ADD_USER, Prog,
+-- 
+2.9.3
+
