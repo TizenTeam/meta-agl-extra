@@ -86,18 +86,6 @@ do_install_append_qemux86-64() {
     sed -i -e '/LD_PRELOAD=\/usr\/lib\/libEGL.so/d' ${D}${systemd_user_unitdir}/afm-user-daemon.service
 }
 
-do_install_append_smack () {
-    install -d ${D}/${sysconfdir}/smack/accesses.d
-    cat > ${D}/${sysconfdir}/smack/accesses.d/default-access-domains-no-user <<EOF
-System User::App-Shared rwxat
-System User::Home       rwxat
-EOF
-    chmod 0644 ${D}/${sysconfdir}/smack/accesses.d/default-access-domains-no-user
-    install -d ${D}/${sysconfdir}/skel/app-data
-    chsmack -a 'User::Home' -t -D ${D}/${sysconfdir}/skel
-    chsmack -a 'User::App-Shared' -D ${D}/${sysconfdir}/skel/app-data
-}
-
 pkg_postinst_${PN}() {
     mkdir -p $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
     setcap cap_mac_override,cap_dac_override=ep $D${bindir}/afm-system-daemon
