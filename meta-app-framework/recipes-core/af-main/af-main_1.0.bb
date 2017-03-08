@@ -76,7 +76,7 @@ do_install_append() {
         mkdir -p ${D}${sysconfdir}/systemd/user/default.target.wants
         mkdir -p ${D}${sysconfdir}/systemd/system/default.target.wants
         ln -sf ${systemd_user_unitdir}/afm-user-daemon.service ${D}${sysconfdir}/systemd/user/default.target.wants
-	install -p -D ${WORKDIR}/init-afm-dirs.service ${D}${systemd_unitdir}/system/init-afm-dirs.service
+	install -m 644 -p -D ${WORKDIR}/init-afm-dirs.service ${D}${systemd_unitdir}/system/init-afm-dirs.service
 	ln -sf ${systemd_unitdir}/system/init-afm-dirs.service ${D}${sysconfdir}/systemd/system/default.target.wants
     fi
     install -m 0755 ${WORKDIR}/afm-install ${D}${bindir}

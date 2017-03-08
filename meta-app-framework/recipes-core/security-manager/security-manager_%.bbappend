@@ -16,7 +16,7 @@ do_install_append () {
 	if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
 		mkdir -p ${D}${systemd_unitdir}/system
 		mkdir -p ${D}${sysconfdir}/systemd/system/default.target.wants
-		install -p -D ${WORKDIR}/init-security-manager-db.service ${D}${systemd_unitdir}/system/init-security-manager-db.service
+		install -m 644 -p -D ${WORKDIR}/init-security-manager-db.service ${D}${systemd_unitdir}/system/init-security-manager-db.service
 		ln -sf ${systemd_unitdir}/system/init-security-manager-db.service ${D}${sysconfdir}/systemd/system/default.target.wants
 	fi
 }
