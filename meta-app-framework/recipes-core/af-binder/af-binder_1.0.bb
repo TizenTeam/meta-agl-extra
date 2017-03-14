@@ -15,7 +15,7 @@ SRC_URI = "${SRC_URI_git} \
            ${SRC_URI_files} \
           "
 
-SRCREV = "2db7c92c0b4f5840884481fa4c95facbdea63bb6"
+SRCREV = "e85e5d8ffe242f826b5f98e2834407b5d4c46690"
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig
