@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ -z "${XDG_RUNTIME_DIR+1}" ]; then
-  export XDG_RUNTIME_DIR=/run/user/$UID
-fi
-LD_PRELOAD=/usr/lib/libEGL.so /usr/bin/web-runtime http://localhost:1236/opa
-
