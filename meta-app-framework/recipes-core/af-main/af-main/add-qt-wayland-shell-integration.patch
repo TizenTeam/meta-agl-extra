@@ -1,11 +1,12 @@
-diff --git a/conf/afm-user-daemon.service b/conf/afm-user-daemon.service
-index 6b5c1d8..e0f6799 100644
---- a/conf/afm-user-daemon.service
-+++ b/conf/afm-user-daemon.service
-@@ -7,6 +7,7 @@ BusName=org.AGL.afm.user
- ExecStart=/usr/bin/afm-user-daemon --user-dbus=unix:path=%t/bus
- Environment=AFM_APP_INSTALL_DIR=%%r
- Environment=LD_PRELOAD=/usr/lib/libEGL.so
+diff --git a/conf/afm-unit.conf b/conf/afm-unit.conf
+index 82113ef..2fbc9e2 100644
+--- a/conf/afm-unit.conf
++++ b/conf/afm-unit.conf
+@@ -127,6 +127,7 @@ SuccessExitStatus=0 SIGKILL
+ WorkingDirectory=-{{&#metadata.app-data-dir}}/{{id}}
+ ExecStartPre=/bin/mkdir -p {{&#metadata.app-data-dir}}/{{id}}
+ Environment=AFM_APP_INSTALL_DIR={{:#metadata.install-dir}}
 +Environment=QT_WAYLAND_SHELL_INTEGRATION=ivi-shell
- Restart=on-failure
- RestartSec=5
+ 
+ %systemd-unit user
+ {{#required-permission.urn:AGL:permission::public:hidden}}\

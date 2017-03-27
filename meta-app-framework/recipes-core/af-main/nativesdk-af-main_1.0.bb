@@ -6,10 +6,6 @@ SECTION = "base"
 
 DEPENDS = "nativesdk-openssl nativesdk-libxml2 nativesdk-xmlsec1 nativesdk-libzip nativesdk-json-c"
 
-afm_name    = "afm"
-afm_confdir = "${sysconfdir}/${afm_name}"
-afm_datadir = "/var/lib/${afm_name}"
-
 EXTRA_OECMAKE = "\
 	-DUSE_LIBZIP=1 \
 	-DUSE_SIMULATION=1 \

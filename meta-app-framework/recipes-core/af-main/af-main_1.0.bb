@@ -11,14 +11,8 @@ BBCLASSEXTEND = "native"
 
 SECTION = "base"
 
-DEPENDS = "openssl libxml2 xmlsec1 systemd libzip json-c security-manager libcap-native af-binder"
+DEPENDS = "openssl libxml2 xmlsec1 systemd libzip json-c systemd security-manager libcap-native af-binder"
 DEPENDS_class-native = "openssl libxml2 xmlsec1 libzip json-c"
-
-afm_name    = "afm"
-afm_confdir = "${sysconfdir}/${afm_name}"
-afm_datadir = "/var/lib/${afm_name}"
-afm_init_datadir = "${datadir}/${afm_name}"
-afb_binding_dir = "${libdir}/afb"
 
 EXTRA_OECMAKE_class-native  = "\
 	-DUSE_LIBZIP=1 \
@@ -36,6 +30,7 @@ EXTRA_OECMAKE = "\
 	-Dafm_name=${afm_name} \
 	-Dafm_confdir=${afm_confdir} \
 	-Dafm_datadir=${afm_datadir} \
+	-Dsystemd_units_root=${systemd_units_root} \
 	-DUNITDIR_USER=${systemd_user_unitdir} \
 	-DUNITDIR_SYSTEM=${systemd_system_unitdir} \
 "
@@ -47,37 +42,31 @@ GROUPADD_PARAM_${PN} = "-r ${afm_name}"
 SYSTEMD_SERVICE_${PN} = "afm-system-daemon.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-SRC_URI_append = "file://init-afm-dirs.sh \
-		  ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://init-afm-dirs.service', '', d)}"
-
 FILES_${PN} += "\
-	${bindir}/init-afm-dirs.sh \
-	${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_user_unitdir}/afm-user-daemon.service ${systemd_unitdir}/system/init-afm-dirs.service', '', d)} \
+	${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_user_unitdir}/afm-user-daemon.service', '', d)} \
 "
-
 RDEPENDS_${PN}_append_smack = " smack-userspace"
 DEPENDS_append_smack = " smack-userspace-native"
 
 # short hacks here
 SRC_URI += "\
 	file://Hack-to-allow-the-debugging.patch \
-	file://add-qt-wayland-shell-integration.patch \
 "
 
 # tools used to install wgt at first boot
 SRC_URI += "\
 	file://afm-install \
+	file://add-qt-wayland-shell-integration.patch \
 "
 
 do_install_append() {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/init-afm-dirs.sh ${D}${bindir}
+    install -d -m 0775 ${D}${systemd_units_root}/{system,user}
+    install -d -m 0775 ${D}${systemd_units_root}/{system,user}/default.target.wants
+    install -d ${D}${afm_datadir}/{applications,icons}
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-        mkdir -p ${D}${sysconfdir}/systemd/user/default.target.wants
-        mkdir -p ${D}${sysconfdir}/systemd/system/default.target.wants
+        mkdir -p ${D}${sysconfdir}/systemd/{system,user}/default.target.wants
         ln -sf ${systemd_user_unitdir}/afm-user-daemon.service ${D}${sysconfdir}/systemd/user/default.target.wants
-	install -m 644 -p -D ${WORKDIR}/init-afm-dirs.service ${D}${systemd_unitdir}/system/init-afm-dirs.service
-	ln -sf ${systemd_unitdir}/system/init-afm-dirs.service ${D}${sysconfdir}/systemd/system/default.target.wants
     fi
     install -m 0755 ${WORKDIR}/afm-install ${D}${bindir}
 }
@@ -87,18 +76,25 @@ do_install_append_qemux86-64() {
 }
 
 pkg_postinst_${PN}() {
-    mkdir -p $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
+        chgrp ${afm_name} $D${systemd_units_root}/{system,user}/{default.target.wants,.}
+    fi
+    chown ${afm_name}:${afm_name} $D${afm_datadir}/{applications,icons,.}
     setcap cap_mac_override,cap_dac_override=ep $D${bindir}/afm-system-daemon
     setcap cap_mac_override,cap_mac_admin,cap_setgid=ep $D${bindir}/afm-user-daemon
 }
 
 pkg_postinst_${PN}_smack() {
-    mkdir -p $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
-    chown ${afm_name}:${afm_name} $D${afm_init_datadir} $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
-    chsmack -a 'System::Shared' -t $D${afm_init_datadir} $D${afm_init_datadir}/applications $D${afm_init_datadir}/icons
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
+        chgrp ${afm_name} $D${systemd_units_root}/{system,user}/{default.target.wants,.}
+        chsmack -a 'System::Shared' -t $D${systemd_units_root}/{system,user}/{default.target.wants,.}
+    fi
+    chown ${afm_name}:${afm_name} $D${afm_datadir}/{applications,icons,.}
+    chsmack -a 'System::Shared' -t $D${afm_datadir}/{applications,icons,.}
     setcap cap_mac_override,cap_dac_override=ep $D${bindir}/afm-system-daemon
     setcap cap_mac_override,cap_mac_admin,cap_setgid=ep $D${bindir}/afm-user-daemon
 }
+FILES_${PN} += " ${systemd_units_root} "
 
 PACKAGES =+ "${PN}-binding ${PN}-binding-dbg"
 FILES_${PN}-binding = " ${afb_binding_dir}/afm-main-binding.so "

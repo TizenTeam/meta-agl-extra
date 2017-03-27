@@ -14,7 +14,13 @@ SRC_URI = "${SRC_URI_git} \
            ${SRC_URI_files} \
           "
 
-SRCREV = "863bf1c6b4e10176edf8b26a9703109ab8db2c43"
+SRCREV = "255c83029f56e8d90e7ce185b007c4ca65afec1e"
 
 S = "${WORKDIR}/git"
+
+afm_name    = "afm"
+afm_confdir = "${sysconfdir}/${afm_name}"
+afm_datadir = "/var/local/lib/${afm_name}"
+afb_binding_dir = "${libdir}/afb"
+systemd_units_root = "/usr/local/lib/systemd"
 
