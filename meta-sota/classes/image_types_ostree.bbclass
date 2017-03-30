@@ -58,6 +58,10 @@ IMAGE_CMD_ostree () {
 
 	echo "d /var/rootdirs 0755 root root -" >>${tmpfiles_conf}
 	echo "L /var/rootdirs/home - - - - /sysroot/home" >>${tmpfiles_conf}
+
+	# Preserve OSTREE_BRANCHNAME for future information
+	mkdir -p usr/share/sota/
+	echo -n "${OSTREE_BRANCHNAME}" > usr/share/sota/branchname
 	# Preserve data in /home to be later copied to /sysroot/home by
 	#   sysroot generating procedure
 	mkdir -p usr/homedirs
@@ -100,6 +104,9 @@ IMAGE_CMD_ostree () {
 	cp ${DEPLOY_DIR_IMAGE}/${OSTREE_KERNEL} boot/vmlinuz-${checksum}
 	cp ${DEPLOY_DIR_IMAGE}/${OSTREE_INITRAMFS_IMAGE}-${MACHINE}${RAMDISK_EXT} boot/initramfs-${checksum}
 
+	# Copy image manifest
+        cat ${IMAGE_MANIFEST} | cut -d " " -f1,3 > usr/package.manifest
+
 	cd ${WORKDIR}
 
 	# Create a tarball that can be then commited to OSTree repo
@@ -130,6 +137,7 @@ IMAGE_CMD_ostreepush () {
 	if [ ${OSTREE_PUSH_CREDENTIALS} ]; then
 		garage-push --repo=${OSTREE_REPO} \
 			    --ref=${OSTREE_BRANCHNAME} \
-			    --credentials=${OSTREE_PUSH_CREDENTIALS}
+			    --credentials=${OSTREE_PUSH_CREDENTIALS} \
+			    --cacert=${STAGING_ETCDIR_NATIVE}/ssl/certs/ca-certificates.crt
 	fi
 }
