@@ -19,6 +19,7 @@ IMAGE_FSTYPES_remove_raspberrypi2 = "wic"
 # Still to be integrared
 IMAGE_FSTYPES_remove_cyclone5 = "wic"
 IMAGE_FSTYPES_remove_dra7xx-evm = "wic"
+IMAGE_FSTYPES_remove_dragonboard-410c = "wic"
 IMAGE_FSTYPES_remove_h3ulcb = "wic"
 IMAGE_FSTYPES_remove_intel-corei7-64 = "wic"
 IMAGE_FSTYPES_remove_joule = "wic"
