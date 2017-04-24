@@ -1,5 +1,0 @@
-
-SRCREV = "efe0be279901006f939cd357ccee47b651c786da"
-PV = "1.8.2+git${SRCPV}"
-
-DEFAULT_PREFERENCE = "1"
